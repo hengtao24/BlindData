@@ -3,6 +3,7 @@ package db;
 import Bean.Person;
 import Bean.User;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import static db.DBManager.createInstance;
@@ -19,18 +20,32 @@ public class DaoImpl implements Dao{
         @Override
         public boolean register(User user){
             DBManager db = createInstance();
-            String sql = "select * from user where StudentId=" +user.getStudentId();
-            String insertSql = "insert into user values(" + user.getStudentId() + "," + user.getPassword() +")";
-            if (db.getRs(sql) == null){
+//            String sql = "select * from user where StudentId=" +user.getStudentId();
+//            String insertSql = "insert into user values(" + user.getStudentId() + "," + user.getPassword() +")";
+//            int count=0;
+//            try{
+//                count = db.getRs(sql).getRow();
+//            }catch (SQLException e){
+//                e.printStackTrace();
+//                return false;
+//            }
+//            if ( count > 0){
+//                return false;
+//            }else {
+//                try{
+//                    db.executeUpdate(insertSql);
+//                    return true;
+//                }catch(Exception e){
+//                    e.printStackTrace();
+//                    System.out.println(e.getMessage());
+//                    return false;
+//                }
+//            }
+            try {
+                return db.register(user);
+            }catch (Exception e){
+                e.printStackTrace();
                 return false;
-            }else {
-                try{
-                    db.executeQuery(insertSql);
-                    return true;
-                }catch(Exception e){
-                    e.printStackTrace();
-                    return false;
-                }
             }
         }
 

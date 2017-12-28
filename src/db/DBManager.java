@@ -95,6 +95,7 @@ public class DBManager{
 	}
 
     public ResultSet getRs(String sql) {
+
         ResultSet rSet = null;
         try{
             rSet = mStatement.executeQuery(sql);
@@ -176,6 +177,37 @@ public class DBManager{
 		return user;
 	}
 
+	public boolean register(User user){
+
+	    connectDB();
+        ResultSet resultSet;
+
+        try {
+            String sql = "select * from user where StudentId=?";
+            mPreStatement = mConnection.prepareStatement(sql);
+            mPreStatement.setString(1, user.getStudentId());
+            resultSet = mPreStatement.executeQuery();
+            int Count = resultSet.getRow();
+            if (Count > 0){
+                return false;
+            }else {
+//                try {
+                String insertSql = "insert into user values(" + user.getStudentId() + "," + user.getPassword() + ")";
+                executeUpdate(insertSql);
+//                }catch (Exception e){
+//                    e.printStackTrace();
+//                    return false;
+//                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeDB();
+        }
+
+        return false;
+    }
+
 	public Person getPerson(String studentId){
 
 		connectDB();
@@ -201,7 +233,6 @@ public class DBManager{
 		} finally {
 			closeDB();
 		}
-
 		return person;
 	}
 

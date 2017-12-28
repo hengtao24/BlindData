@@ -39,6 +39,7 @@ public class RegisterServlet extends HttpServlet{
 		if (request.getHeader("weight") != null){
 			weight = Double.parseDouble(request.getHeader("weight"));
 		}
+
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("application/json; charset=utf-8");
 		PrintWriter out = response.getWriter();
@@ -52,6 +53,7 @@ public class RegisterServlet extends HttpServlet{
 		Dao daoImpl = new DaoImpl();
 		Service serviceImpl = new ServiceImpl();
 		if (username != null) {
+		    System.out.println(user.getStudentId() + "11111");
 			if (daoImpl.register(user)) {
 				serviceImpl.insert(SQLUtil.InsertPerson(person));
 				status = true;
