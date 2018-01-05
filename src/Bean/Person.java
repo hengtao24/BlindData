@@ -10,17 +10,20 @@ public class Person {
     private int Age;
     private double Height;
     private double Weight;
-//    private List<String> Hobby;
+    private List<String> Hobby;
+    private String Department;
 
     public Person(){}
 
-    public Person(String studentId,String name,String sex,int age,double height,double weight){
+    public Person(String studentId,String name,String sex,int age,double height,double weight,List<String> hobby,String department){
         this.StudentId = studentId;
         this.Name = name;
         this.Sex = sex;
         this.Age = age;
         this.Height = height;
         this.Weight = weight;
+        this.Hobby = hobby;
+        this.Department = department;
     }
 
     public String getStudentId() {
@@ -71,4 +74,19 @@ public class Person {
         Weight = weight;
     }
 
+    public List<String> getHobby() {
+        return Hobby;
+    }
+
+    public void setHobby(List<String> hobby) {
+        Hobby = hobby;
+    }
+
+    public String getDepartment() {
+        return Department;
+    }
+
+    public void setDepartment(String department) {
+        Department = department;
+    }
 }

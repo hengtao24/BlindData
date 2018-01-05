@@ -43,7 +43,15 @@ public class ServiceImpl implements Service{
 
 	@Override
 	public int insert(String sql){
-		return db.executeUpdate(sql);
+		try{
+			db.connectDB();
+			return db.executeUpdate(sql);
+		}catch (Exception e){
+			e.printStackTrace();
+		}finally {
+			db.closeDB();
+		}
+		return  0;
 	}
 //	public Boolean login(String username,String password){
 //

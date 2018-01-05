@@ -58,15 +58,10 @@ public class LoginServlet extends HttpServlet{
 			person = null;
 		}
 
-//		List<String> list = new ArrayList<>();
-//		list.add("体育");
-//		list.add("电影");
-
 		try {
 			JSONObject jsonObject = new JSONObject();
 			jsonObject.put("status",status);
 			jsonObject.put("message",message);
-//			jsonObject.put("hobby",list);
 			if (person != null) {
 				jsonObject.put("person",person);
 			}else{

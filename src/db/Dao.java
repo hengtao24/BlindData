@@ -11,5 +11,5 @@ public interface Dao {
     Person getPerson(String studentId);
     boolean register(User user);
     List<Object> getList(String sql, Object[] params);
-
+    List<Person> getMatchPerson(String sql);
 }

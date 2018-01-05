@@ -1,7 +1,10 @@
 package db;
 
+import Bean.MatchPerson;
 import Bean.Person;
 import Bean.User;
+import Util.HobbyUtil;
+import Util.SQLUtil;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -17,7 +20,7 @@ public class DBManager{
 
 	// 数据库连接常量
 	public static final String Driver = "com.mysql.jdbc.Driver";
-	public static final String url = "jdbc:mysql://localhost:3306/blinddata";
+	public static final String url = "jdbc:mysql://localhost:3306/blinddata?characterEncoding=utf8&useSSL=true";
 	public static final String USER = "root";
 	public static final String PASS = "shtt960421?";
 	
@@ -183,21 +186,20 @@ public class DBManager{
         ResultSet resultSet;
 
         try {
-            String sql = "select * from user where StudentId=?";
+			String sql = "select * from user where StudentId=?";
             mPreStatement = mConnection.prepareStatement(sql);
             mPreStatement.setString(1, user.getStudentId());
             resultSet = mPreStatement.executeQuery();
-            int Count = resultSet.getRow();
-            if (Count > 0){
+			int C =0 ;
+			while (resultSet.next()){
+				C++;
+			}
+            if (C > 0){
                 return false;
             }else {
-//                try {
                 String insertSql = "insert into user values(" + user.getStudentId() + "," + user.getPassword() + ")";
                 executeUpdate(insertSql);
-//                }catch (Exception e){
-//                    e.printStackTrace();
-//                    return false;
-//                }
+                return true;
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -227,6 +229,8 @@ public class DBManager{
 				person.setSex(resultSet.getString("Sex"));
 				person.setHeight(resultSet.getDouble("Height"));
 				person.setWeight(resultSet.getDouble("Weight"));
+				person.setHobby(HobbyUtil.StringToList(resultSet.getString("HObby")));
+				person.setDepartment(resultSet.getString("Department"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -236,4 +240,30 @@ public class DBManager{
 		return person;
 	}
 
+	public List<Person> getMatchPerson(String sql){
+		connectDB();
+		List<Person> persons = new ArrayList<>();
+		ResultSet resultSet = null;
+		resultSet = getRs(sql);
+
+		try {
+			while (resultSet.next()){
+				Person person = new Person();
+				person.setStudentId(resultSet.getString("StudentId"));
+				person.setName(resultSet.getString("Name"));
+				person.setAge(resultSet.getInt("Age"));
+				person.setSex(resultSet.getString("Sex"));
+				person.setHeight(resultSet.getDouble("Height"));
+				person.setWeight(resultSet.getDouble("Weight"));
+				person.setHobby(HobbyUtil.StringToList(resultSet.getString("Hobby")));
+				person.setDepartment(resultSet.getString("Department"));
+				persons.add(person);
+			}
+		} catch (SQLException e) {
+			System.out.println("结果集解析出错："+e.getMessage());
+		} finally {
+			closeDB();
+		}
+		return persons;
+	}
 }
